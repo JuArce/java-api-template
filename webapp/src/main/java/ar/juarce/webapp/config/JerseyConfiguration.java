@@ -1,7 +1,5 @@
 package ar.juarce.webapp.config;
 
-import ar.juarce.webapp.controllers.HelloWorldController;
-import ar.juarce.webapp.exceptionMappers.GenericExceptionMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -13,7 +11,7 @@ public class JerseyConfiguration extends ResourceConfig {
 
     @PostConstruct
     public void init() {
-        register(HelloWorldController.class);
-        register(GenericExceptionMapper.class);
+        packages("ar.juarce.webapp.controllers");
+        packages("ar.juarce.webapp.exceptionMappers");
     }
 }
