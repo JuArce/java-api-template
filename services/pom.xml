@@ -8,10 +8,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>webapp</artifactId>
+  <artifactId>services</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>webapp</name>
+  <name>services</name>
 
   <dependencies>
     <!--    Modules dependencies-->
@@ -22,7 +21,7 @@
     </dependency>
     <dependency>
       <groupId>ar.juarce</groupId>
-      <artifactId>services</artifactId>
+      <artifactId>persistence</artifactId>
       <version>${project.parent.version}</version>
       <scope>runtime</scope>
     </dependency>
@@ -32,27 +31,5 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jersey</artifactId>
-    </dependency>
   </dependencies>
-
-  <!--  <build>-->
-  <!--    <plugins>-->
-  <!--      <plugin>-->
-  <!--        <groupId>org.springframework.boot</groupId>-->
-  <!--        <artifactId>spring-boot-maven-plugin</artifactId>-->
-  <!--        <version>${spring-boot-starter.version}</version>-->
-  <!--        <configuration>-->
-  <!--          <mainClass>ar.juarce.webapp.App</mainClass>-->
-  <!--        </configuration>-->
-  <!--      </plugin>-->
-  <!--    </plugins>-->
-  <!--  </build>-->
 </project>
