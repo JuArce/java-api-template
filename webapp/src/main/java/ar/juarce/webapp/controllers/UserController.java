@@ -7,8 +7,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class UserController {
     @Path("/")
     @Produces("application/json")
     public Response getUsers() {
-        final List<User> users = userService.getUsers();
+        final List<User> users = userService.findAll();
         return Response.ok(new GenericEntity<>(users) {
         }).build();
     }
