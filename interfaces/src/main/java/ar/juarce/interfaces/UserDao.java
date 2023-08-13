@@ -2,9 +2,7 @@ package ar.juarce.interfaces;
 
 import ar.juarce.models.User;
 
-import java.util.List;
 
-public interface UserDao {
+public interface UserDao extends CrudOperations<User, Long> {
 
-    List<User> findAll();
 }

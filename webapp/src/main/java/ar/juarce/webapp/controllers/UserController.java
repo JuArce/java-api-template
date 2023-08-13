@@ -2,11 +2,8 @@ package ar.juarce.webapp.controllers;
 
 import ar.juarce.interfaces.UserService;
 import ar.juarce.models.User;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.GenericEntity;
-import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -16,18 +13,66 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @Context
+    private UriInfo uriInfo;
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GET
-    @Path("/")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers() {
         final List<User> users = userService.findAll();
-        return Response.ok(new GenericEntity<>(users) {
-        }).build();
+        return Response
+                .ok(new GenericEntity<>(users) {
+                })
+                .build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response saveUser(User user) {
+        final User savedUser = userService.create(user);
+        return Response
+                .created(uriInfo
+                        .getAbsolutePathBuilder()
+                        .path(savedUser.getId().toString())
+                        .build())
+                .entity(savedUser)
+                .build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@PathParam("id") Long id) {
+        final User user = userService.findById(id).orElseThrow();
+        return Response
+                .ok(user)
+                .build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("id") Long id, User user) {
+        final User updatedUser = userService.update(id, user);
+        return Response
+                .ok(updatedUser)
+                .build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteUser(@PathParam("id") Long id) {
+        userService.deleteById(id);
+        return Response
+                .noContent()
+                .build();
     }
 
 }

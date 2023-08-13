@@ -4,7 +4,6 @@ import ar.juarce.models.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends CrudOperations<User, Long> {
 
-    List<User> findAll();
 }
