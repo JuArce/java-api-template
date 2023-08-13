@@ -16,7 +16,6 @@ import java.util.List;
 
 @Path("/users")
 public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @Autowired
@@ -28,7 +27,6 @@ public class UserController {
     @Path("/")
     @Produces("application/json")
     public Response getUsers() {
-        logger.info("getUsers");
         final List<User> users = userService.getUsers();
         return Response.ok(new GenericEntity<>(users) {
         }).build();
