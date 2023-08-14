@@ -1,29 +1,53 @@
 package ar.juarce.models;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Data
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@Builder
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
-    private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = encrypt(password);
-    }
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean enabled = false;
+
+    @Column(name = "created_at" ,nullable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public User() {
         // Needed for Jackson deserialization
+        // Needed for Hibernate
     }
 
-    private String encrypt(String password) {
-        return password + "_encrypted";
+    public User(Long id, String username, String email, String password, boolean enabled, LocalDateTime createdAt) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -40,6 +64,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [email=" + email + ", id=" + id + ", name=" + name + ", password=" + password + "]";
+        return String.format("User %s: [email = %s, name = %s]", id, email, username);
     }
 }

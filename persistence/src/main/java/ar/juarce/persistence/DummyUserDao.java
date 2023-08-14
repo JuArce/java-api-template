@@ -2,6 +2,8 @@ package ar.juarce.persistence;
 
 import ar.juarce.interfaces.UserDao;
 import ar.juarce.models.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,59 +13,60 @@ import java.util.Optional;
 @Repository
 public class DummyUserDao implements UserDao {
 
-    private final List<User> users;
-
-    public DummyUserDao() {
-        users = new ArrayList<>();
-        users.addAll(List.of(
-                new User(1L, "Julian", "julian@email.com", "1234"),
-                new User(2L, "Juan", "juan@email.com", "1234")
-        ));
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public User create(User entity) {
-        final Long id =(long) (users.size() + 1);
-        final User user = new User(id, entity.getName(), entity.getEmail(), entity.getPassword());
-        users.add(user);
+        final User user = User.builder()
+                .username(entity.getUsername())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .build();
+        entityManager.persist(user);
         return user;
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return users.stream().filter(user -> user.getId().equals(id)).findFirst();
+        return Optional.ofNullable(entityManager.find(User.class, id));
+
     }
 
+    // TODO
     @Override
     public List<User> findAll() {
-        return users;
+//        entityManager.getCriteriaBuilder()
+//                .createQuery(User.class)
+//                .from(User.class);
+        return new ArrayList<>();
     }
 
     @Override
     public User update(Long id, User entity) {
         entity.setId(id);
-        final User user = new User(id, entity.getName(), entity.getEmail(), entity.getPassword());
-        users.set(users.indexOf(entity), user);
-        return user;
+        entityManager.persist(entity);
+        return entity;
     }
 
     @Override
     public void deleteById(Long id) {
-        users.removeIf(user -> user.getId().equals(id));
+        entityManager.remove(findById(id));
     }
 
     @Override
     public void delete(User entity) {
-        users.remove(entity);
+        entityManager.remove(entity);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return users.stream().anyMatch(user -> user.getId().equals(id));
+        return findById(id).isPresent();
     }
 
+    // TODO
     @Override
     public long count() {
-        return users.size();
+        return 0;
     }
 }
