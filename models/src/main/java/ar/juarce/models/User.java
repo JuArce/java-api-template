@@ -2,7 +2,6 @@ package ar.juarce.models;
 
 import ar.juarce.models.dtos.UserDto;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,6 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
@@ -30,12 +28,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Builder.Default
-    private boolean enabled = false;
+    private boolean enabled;
 
     @Column(name = "created_at" ,nullable = false)
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     public User() {
         // Needed for Hibernate
@@ -51,7 +47,7 @@ public class User {
     }
 
     public static User fromUserDto(UserDto userDto) {
-        return new UserBuilder()
+        return new Builder()
                 .id(null)
                 .username(userDto.username())
                 .email(userDto.email())
@@ -74,5 +70,57 @@ public class User {
     @Override
     public String toString() {
         return String.format("User %s: [email = %s, name = %s]", id, email, username);
+    }
+
+    /*
+        Builder for User
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final User user;
+
+        public Builder() {
+            user = new User();
+            // Set default values
+            user.setEnabled(false);
+            user.setCreatedAt(LocalDateTime.now());
+        }
+
+        public User build() {
+            return user;
+        }
+
+        public Builder id(Long id) {
+            user.setId(id);
+            return this;
+        }
+
+        public Builder username(String username) {
+            user.setUsername(username);
+            return this;
+        }
+
+        public Builder email(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
+        public Builder password(String password) {
+            user.setPassword(password);
+            return this;
+        }
+
+        public Builder enabled(boolean enabled) {
+            user.setEnabled(enabled);
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            user.setCreatedAt(createdAt);
+            return this;
+        }
     }
 }

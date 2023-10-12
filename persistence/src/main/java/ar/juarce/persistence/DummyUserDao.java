@@ -18,13 +18,8 @@ public class DummyUserDao implements UserDao {
 
     @Override
     public User create(User entity) {
-        final User user = User.builder()
-                .username(entity.getUsername())
-                .email(entity.getEmail())
-                .password(entity.getPassword())
-                .build();
-        entityManager.persist(user);
-        return user;
+        entityManager.persist(entity);
+        return entity;
     }
 
     @Override
