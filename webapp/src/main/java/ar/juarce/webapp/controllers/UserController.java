@@ -2,6 +2,8 @@ package ar.juarce.webapp.controllers;
 
 import ar.juarce.interfaces.UserService;
 import ar.juarce.models.User;
+import ar.juarce.models.dtos.UserDto;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class UserController {
     public Response getUsers() {
         final List<User> users = userService.findAll();
         return Response
-                .ok(new GenericEntity<>(users) {
+                .ok(new GenericEntity<>(UserDto.fromUsers(users)) {
                 })
                 .build();
     }
@@ -34,14 +36,14 @@ public class UserController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response saveUser(User user) {
-        final User savedUser = userService.create(user);
+    public Response saveUser(@Valid UserDto userDto) {
+        final User user = userService.create(User.fromUserDto(userDto));
         return Response
                 .created(uriInfo
                         .getAbsolutePathBuilder()
-                        .path(savedUser.getId().toString())
+                        .path(user.getId().toString())
                         .build())
-                .entity(savedUser)
+                .entity(UserDto.fromUser(user))
                 .build();
     }
 
@@ -51,7 +53,7 @@ public class UserController {
     public Response getUser(@PathParam("id") Long id) {
         final User user = userService.findById(id).orElseThrow();
         return Response
-                .ok(user)
+                .ok(UserDto.fromUser(user))
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package ar.juarce.models;
 
+import ar.juarce.models.dtos.UserDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +38,6 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public User() {
-        // Needed for Jackson deserialization
         // Needed for Hibernate
     }
 
@@ -48,6 +48,15 @@ public class User {
         this.password = password;
         this.enabled = enabled;
         this.createdAt = createdAt;
+    }
+
+    public static User fromUserDto(UserDto userDto) {
+        return new UserBuilder()
+                .id(null)
+                .username(userDto.username())
+                .email(userDto.email())
+                .password(userDto.password())
+                .build();
     }
 
     @Override
