@@ -4,6 +4,10 @@ import ar.juarce.interfaces.UserDao;
 import ar.juarce.models.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -28,13 +32,17 @@ public class DummyUserDao implements UserDao {
 
     }
 
-    // TODO
+    // Refactor this
     @Override
     public List<User> findAll() {
-//        entityManager.getCriteriaBuilder()
-//                .createQuery(User.class)
-//                .from(User.class);
-        return new ArrayList<>();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+
+        criteriaQuery.select(root);
+
+        TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 
     @Override
