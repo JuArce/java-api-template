@@ -28,8 +28,7 @@ public class UserController {
     public Response getUsers() {
         final List<User> users = userService.findAll();
         return Response
-                .ok(new GenericEntity<>(UserDto.fromUsers(users)) {
-                })
+                .ok(UserDto.fromUsers(users))
                 .build();
     }
 
