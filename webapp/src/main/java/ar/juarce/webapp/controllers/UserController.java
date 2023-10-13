@@ -51,7 +51,7 @@ public class UserController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") Long id) {
-        final User user = userService.findById(id).orElseThrow();
+        final User user = userService.findById(id).orElseThrow(NotFoundException::new);
         return Response
                 .ok(UserDto.fromUser(user))
                 .build();

@@ -1,23 +1,19 @@
 package ar.juarce.webapp.exceptionMappers;
 
 import ar.juarce.models.dtos.ErrorDto;
-import ar.juarce.models.dtos.ValidationErrorDto;
-import jakarta.inject.Singleton;
+import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.springframework.stereotype.Component;
 
-@Singleton
-@Component
 @Provider
-public class GenericExceptionMapper implements ExceptionMapper<Exception> {
+public class ClientErrorExceptionMapper implements ExceptionMapper<ClientErrorException> {
 
     @Override
-    public Response toResponse(Exception exception) {
+    public Response toResponse(ClientErrorException exception) {
         return Response
-                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .status(exception.getResponse().getStatus())
                 .entity(ErrorDto.fromErrorMsg(exception.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
