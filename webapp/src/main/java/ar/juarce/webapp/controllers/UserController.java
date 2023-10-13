@@ -1,6 +1,7 @@
 package ar.juarce.webapp.controllers;
 
 import ar.juarce.interfaces.UserService;
+import ar.juarce.interfaces.exceptions.AlreadyExistsException;
 import ar.juarce.models.User;
 import ar.juarce.webapp.dtos.UserDto;
 import jakarta.validation.Valid;
@@ -42,12 +43,8 @@ public class UserController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response saveUser(@Valid UserDto userDto) {
-        final User user = userService.create(User.builder()
-                .username(userDto.username())
-                .email(userDto.email())
-                .password(userDto.password())
-                .build());
+    public Response saveUser(@Valid UserDto userDto) throws AlreadyExistsException {
+        final User user = userService.create(buildNewUser(userDto));
 
         return Response
                 .created(uriInfo
@@ -72,10 +69,20 @@ public class UserController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("id") Long id, User user) {
-        final User updatedUser = userService.update(id, user);
+    public Response updateUser(@PathParam("id") Long id, @Valid UserDto userDto) throws AlreadyExistsException {
+        final User user = userService.update(id, buildNewUser(userDto));
+        if (user.getId().equals(id)) {
+            return Response
+                    .ok(UserDto.fromUser(user))
+                    .build();
+        }
+
         return Response
-                .ok(updatedUser)
+                .created(uriInfo
+                        .getAbsolutePathBuilder()
+                        .path(user.getId().toString())
+                        .build())
+                .entity(UserDto.fromUser(user))
                 .build();
     }
 
@@ -85,6 +92,17 @@ public class UserController {
         userService.deleteById(id);
         return Response
                 .noContent()
+                .build();
+    }
+
+    /*
+    Auxiliary methods
+     */
+    private User buildNewUser(UserDto userDto) {
+        return User.builder()
+                .username(userDto.username())
+                .email(userDto.email())
+                .password(userDto.password())
                 .build();
     }
 

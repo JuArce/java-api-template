@@ -2,6 +2,7 @@ package ar.juarce.services;
 
 import ar.juarce.interfaces.UserDao;
 import ar.juarce.interfaces.UserService;
+import ar.juarce.interfaces.exceptions.AlreadyExistsException;
 import ar.juarce.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User create(User entity) {
+    public User create(User entity) throws AlreadyExistsException {
         return userDao.create(entity);
     }
 
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User update(Long id, User entity) {
+    public User update(Long id, User entity) throws AlreadyExistsException {
         return userDao.update(id, entity);
     }
 

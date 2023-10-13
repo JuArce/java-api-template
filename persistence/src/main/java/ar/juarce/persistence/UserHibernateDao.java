@@ -1,6 +1,9 @@
 package ar.juarce.persistence;
 
 import ar.juarce.interfaces.UserDao;
+import ar.juarce.interfaces.exceptions.AlreadyExistsException;
+import ar.juarce.interfaces.exceptions.EmailAlreadyExistsException;
+import ar.juarce.interfaces.exceptions.UsernameAlreadyExistsException;
 import ar.juarce.models.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,7 +23,9 @@ public class UserHibernateDao implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public User create(User entity) {
+    public User create(User entity) throws AlreadyExistsException {
+        validateUserUniqueness(entity);
+
         entityManager.persist(entity);
         return entity;
     }
@@ -45,11 +50,19 @@ public class UserHibernateDao implements UserDao {
     }
 
     @Override
-    public User update(Long id, User entity) {
-        entity.setId(id);
-        entityManager.persist(entity);
-        return entity;
+    public User update(Long id, User entity) throws AlreadyExistsException {
+        Optional<User> optionalUser = findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = updateUser(optionalUser.get(), entity);
+            entityManager.persist(user);
+            return user;
+        } else {
+            return create(entity);
+        }
     }
+
+
 
     @Override
     public void deleteById(Long id) {
@@ -70,5 +83,55 @@ public class UserHibernateDao implements UserDao {
     @Override
     public long count() {
         return 0;
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        final TypedQuery<User> query = entityManager.createQuery("FROM User WHERE username = :username", User.class)
+                .setParameter("username", username);
+        return query.getResultList().stream().findFirst();
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        final TypedQuery<User> query = entityManager.createQuery("FROM User WHERE email = :email", User.class)
+                .setParameter("email", email);
+        return query.getResultList().stream().findFirst();
+    }
+
+    /*
+    Auxiliary methods
+     */
+    private void validateUserUniqueness(User user) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+        checkDuplicateUsername(user);
+        checkDuplicateEmail(user);
+    }
+
+    private User updateUser(User user, User newValues) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+        newValues.setId(user.getId());
+        validateUserUniqueness(newValues);
+
+        user.setUsername(newValues.getUsername());
+        user.setEmail(newValues.getEmail());
+        user.setPassword(newValues.getPassword());
+        return user;
+    }
+
+    private void checkDuplicateUsername(User user) throws UsernameAlreadyExistsException {
+        Optional<User> existingUser = findByUsername(user.getUsername());
+        if (existingUser.isPresent() && isDifferentUser(existingUser.get(), user)) {
+            throw new UsernameAlreadyExistsException();
+        }
+    }
+
+    private void checkDuplicateEmail(User user) throws EmailAlreadyExistsException {
+        Optional<User> existingUser = findByEmail(user.getEmail());
+        if (existingUser.isPresent() && isDifferentUser(existingUser.get(), user)) {
+            throw new EmailAlreadyExistsException();
+        }
+    }
+
+    private boolean isDifferentUser(User user, User otherUser) {
+        return !user.equals(otherUser);
     }
 }
