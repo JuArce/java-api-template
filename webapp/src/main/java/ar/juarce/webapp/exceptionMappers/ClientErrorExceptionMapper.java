@@ -1,6 +1,6 @@
 package ar.juarce.webapp.exceptionMappers;
 
-import ar.juarce.models.dtos.ErrorDto;
+import ar.juarce.webapp.dtos.ErrorDto;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

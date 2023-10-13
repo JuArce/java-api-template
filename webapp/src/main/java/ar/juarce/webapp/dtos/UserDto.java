@@ -1,4 +1,4 @@
-package ar.juarce.models.dtos;
+package ar.juarce.webapp.dtos;
 
 import ar.juarce.models.User;
 import jakarta.validation.constraints.Email;

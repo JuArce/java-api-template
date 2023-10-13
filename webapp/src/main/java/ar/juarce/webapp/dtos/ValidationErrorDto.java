@@ -1,4 +1,4 @@
-package ar.juarce.models.dtos;
+package ar.juarce.webapp.dtos;
 
 public record ValidationErrorDto(String attribute, String message) {
 

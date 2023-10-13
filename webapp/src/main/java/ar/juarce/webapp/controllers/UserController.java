@@ -2,7 +2,7 @@ package ar.juarce.webapp.controllers;
 
 import ar.juarce.interfaces.UserService;
 import ar.juarce.models.User;
-import ar.juarce.models.dtos.UserDto;
+import ar.juarce.webapp.dtos.UserDto;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -37,7 +37,12 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveUser(@Valid UserDto userDto) {
-        final User user = userService.create(User.fromUserDto(userDto));
+        final User user = userService.create(User.builder()
+                .username(userDto.username())
+                .email(userDto.email())
+                .password(userDto.password())
+                .build());
+
         return Response
                 .created(uriInfo
                         .getAbsolutePathBuilder()

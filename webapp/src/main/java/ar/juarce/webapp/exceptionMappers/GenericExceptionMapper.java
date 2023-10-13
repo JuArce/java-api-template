@@ -1,16 +1,11 @@
 package ar.juarce.webapp.exceptionMappers;
 
-import ar.juarce.models.dtos.ErrorDto;
-import ar.juarce.models.dtos.ValidationErrorDto;
-import jakarta.inject.Singleton;
+import ar.juarce.webapp.dtos.ErrorDto;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.springframework.stereotype.Component;
 
-@Singleton
-@Component
 @Provider
 public class GenericExceptionMapper implements ExceptionMapper<Exception> {
 

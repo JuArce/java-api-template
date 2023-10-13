@@ -10,12 +10,11 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DummyUserDao implements UserDao {
+public class UserHibernateDao implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;

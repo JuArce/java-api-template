@@ -1,7 +1,6 @@
 package ar.juarce.webapp.exceptionMappers;
 
-import ar.juarce.models.dtos.ValidationErrorDto;
-import jakarta.inject.Singleton;
+import ar.juarce.webapp.dtos.ValidationErrorDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.GenericEntity;
@@ -9,14 +8,11 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Singleton
-@Component
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 

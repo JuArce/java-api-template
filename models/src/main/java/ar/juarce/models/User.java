@@ -1,6 +1,5 @@
 package ar.juarce.models;
 
-import ar.juarce.models.dtos.UserDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,24 +34,6 @@ public class User {
 
     public User() {
         // Needed for Hibernate
-    }
-
-    public User(Long id, String username, String email, String password, boolean enabled, LocalDateTime createdAt) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.enabled = enabled;
-        this.createdAt = createdAt;
-    }
-
-    public static User fromUserDto(UserDto userDto) {
-        return new Builder()
-                .id(null)
-                .username(userDto.username())
-                .email(userDto.email())
-                .password(userDto.password())
-                .build();
     }
 
     @Override
