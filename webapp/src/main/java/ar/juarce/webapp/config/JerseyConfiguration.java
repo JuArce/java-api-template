@@ -13,5 +13,6 @@ public class JerseyConfiguration extends ResourceConfig {
     public void init() {
         packages("ar.juarce.webapp.controllers");
         packages("ar.juarce.webapp.exceptionMappers");
+        register(ObjectMapperProvider.class);
     }
 }
