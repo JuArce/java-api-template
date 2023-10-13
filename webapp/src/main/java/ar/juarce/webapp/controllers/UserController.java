@@ -27,6 +27,13 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers() {
         final List<User> users = userService.findAll();
+
+        if (users.isEmpty()) {
+            return Response
+                    .noContent()
+                    .build();
+        }
+
         return Response
                 .ok(UserDto.fromUsers(users))
                 .build();
