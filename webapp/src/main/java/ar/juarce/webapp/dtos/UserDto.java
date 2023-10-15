@@ -12,14 +12,14 @@ public record UserDto(
         Long id,
 
         @NotNull
-        @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
-        @Size(min = 3, max = 255)
-        String username,
-
-        @NotNull
         @Email
         @Size(min = 3, max = 255)
         String email,
+
+        @NotNull
+        @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
+        @Size(min = 3, max = 255)
+        String username,
 
         @NotNull
         @Size(min = 8, max = 255)
@@ -32,8 +32,8 @@ public record UserDto(
     public static UserDto fromUser(User user) {
         return new UserDto(
                 user.getId(),
-                user.getUsername(),
                 user.getEmail(),
+                user.getUsername(),
                 null,
                 user.isEnabled(),
                 user.getCreatedAt().toString()

@@ -71,6 +71,7 @@ public class User {
         }
 
         public User build() {
+            validate();
             return user;
         }
 
@@ -79,13 +80,13 @@ public class User {
             return this;
         }
 
-        public Builder username(String username) {
-            user.setUsername(username);
+        public Builder email(String email) {
+            user.setEmail(email);
             return this;
         }
 
-        public Builder email(String email) {
-            user.setEmail(email);
+        public Builder username(String username) {
+            user.setUsername(username);
             return this;
         }
 
@@ -102,6 +103,12 @@ public class User {
         public Builder createdAt(LocalDateTime createdAt) {
             user.setCreatedAt(createdAt);
             return this;
+        }
+
+        public void validate() {
+            Objects.requireNonNull(user.getUsername());
+            Objects.requireNonNull(user.getEmail());
+            Objects.requireNonNull(user.getPassword());
         }
     }
 }

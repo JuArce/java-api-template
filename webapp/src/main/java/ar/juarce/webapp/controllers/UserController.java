@@ -100,8 +100,8 @@ public class UserController {
      */
     private User buildNewUser(UserDto userDto) {
         return User.builder()
-                .username(userDto.username())
                 .email(userDto.email())
+                .username(userDto.username())
                 .password(userDto.password())
                 .build();
     }
