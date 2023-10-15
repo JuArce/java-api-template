@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface UserDao extends CrudOperations<User, Long> {
 
-    Optional<User> findByUsername(String username);
-
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByUsername(String username);
 
 }

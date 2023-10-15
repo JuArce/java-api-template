@@ -62,16 +62,16 @@ public class UserHibernateDao implements UserDao {
         }
     }
 
-
-
     @Override
     public void deleteById(Long id) {
-        entityManager.remove(findById(id));
+        entityManager.createNativeQuery("DELETE FROM users WHERE id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public void delete(User entity) {
-        entityManager.remove(entity);
+        deleteById(entity.getId());
     }
 
     @Override
@@ -82,7 +82,15 @@ public class UserHibernateDao implements UserDao {
     // TODO
     @Override
     public long count() {
-        return 0;
+        return entityManager.createQuery("SELECT COUNT(*) FROM User", Long.class)
+                .getSingleResult();
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        final TypedQuery<User> query = entityManager.createQuery("FROM User WHERE email = :email", User.class)
+                .setParameter("email", email);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
@@ -92,12 +100,6 @@ public class UserHibernateDao implements UserDao {
         return query.getResultList().stream().findFirst();
     }
 
-    @Override
-    public Optional<User> findByEmail(String email) {
-        final TypedQuery<User> query = entityManager.createQuery("FROM User WHERE email = :email", User.class)
-                .setParameter("email", email);
-        return query.getResultList().stream().findFirst();
-    }
 
     /*
     Auxiliary methods
