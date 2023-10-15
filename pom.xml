@@ -18,6 +18,7 @@
 
     <spring-boot-starter.version>3.1.2</spring-boot-starter.version>
     <postgresql.version>42.6.0</postgresql.version>
+    <hsql.version>2.7.2</hsql.version>
     <lombok.version>1.18.28</lombok.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
   </properties>
@@ -77,6 +78,15 @@
         <artifactId>postgresql</artifactId>
         <version>${postgresql.version}</version>
       </dependency>
+
+      <!-- HSQL     -->
+      <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>${hsql.version}</version>
+        <scope>test</scope>
+      </dependency>
+
 
       <!-- Validation     -->
       <dependency>
