@@ -68,4 +68,16 @@ public class UserServiceImpl implements UserService {
     public long count() {
         return userDao.count();
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
 }
