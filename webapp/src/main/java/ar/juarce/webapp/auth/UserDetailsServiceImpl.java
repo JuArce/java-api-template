@@ -2,7 +2,9 @@ package ar.juarce.webapp.auth;
 
 import ar.juarce.interfaces.UserService;
 import ar.juarce.models.User;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = userService.findByUsername(username).orElseThrow(); // TODO throw custom exception
+        final User user = userService.findByUsername(username).orElseThrow(() -> new BadCredentialsException("Bad credentials")); // TODO throw custom exception
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())

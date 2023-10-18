@@ -5,6 +5,7 @@ import ar.juarce.interfaces.UserService;
 import ar.juarce.interfaces.exceptions.AlreadyExistsException;
 import ar.juarce.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +16,18 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     @Override
     public User create(User entity) throws AlreadyExistsException {
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         return userDao.create(entity);
     }
 
