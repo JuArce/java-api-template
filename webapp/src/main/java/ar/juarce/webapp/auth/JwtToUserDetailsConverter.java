@@ -1,20 +1,25 @@
 package ar.juarce.webapp.auth;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtToUserDetailsConverter implements Converter<Jwt, UsernamePasswordAuthenticationToken> {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final UserDetailsChecker detailsChecker;
 
-    public JwtToUserDetailsConverter(UserDetailsServiceImpl userDetailsService) {
+    @Autowired
+    public JwtToUserDetailsConverter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
         this.detailsChecker = new AccountStatusUserDetailsChecker();
     }
