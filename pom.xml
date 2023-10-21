@@ -58,6 +58,18 @@
         <version>${spring-boot-starter.version}</version>
       </dependency>
 
+      <!-- Security     -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+        <version>${spring-boot-starter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        <version>${spring-boot-starter.version}</version>
+      </dependency>
+
       <!-- Actuator     -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -86,7 +98,6 @@
         <version>${hsql.version}</version>
         <scope>test</scope>
       </dependency>
-
 
       <!-- Validation     -->
       <dependency>
