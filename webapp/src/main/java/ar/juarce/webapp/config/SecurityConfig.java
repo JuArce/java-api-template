@@ -146,10 +146,6 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler())
                 )
 
-                // Disable caching
-                .headers(header ->
-                        header.cacheControl(HeadersConfigurer.CacheControlConfig::disable))
-
                 // Disable CSRF
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -157,7 +153,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/**").permitAll())
 
-                // Add JWT & Basic Authentication filters
+                // Add Basic & JWT Authentication filters
                 .addFilter(basicAuthenticationFilter(http))
                 .addFilter(bearerTokenAuthenticationFilter(http))
 
