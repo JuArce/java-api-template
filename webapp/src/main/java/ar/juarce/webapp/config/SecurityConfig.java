@@ -54,7 +54,7 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("classpath:jwkSet.json")
+    @Value("classpath:jwk_set.json")
     private Resource jkkSetFile;
 
     @Autowired
