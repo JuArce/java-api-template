@@ -27,8 +27,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User entity) throws AlreadyExistsException {
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        encodePassword(entity);
         return userDao.create(entity);
+    }
+
+    private void encodePassword(User entity) {
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
     }
 
     @Transactional(readOnly = true)
@@ -46,6 +50,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User update(Long id, User entity) throws AlreadyExistsException {
+        encodePassword(entity);
         return userDao.update(id, entity);
     }
 
