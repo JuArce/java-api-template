@@ -3,6 +3,7 @@ package ar.juarce.services;
 import ar.juarce.interfaces.UserDao;
 import ar.juarce.interfaces.UserService;
 import ar.juarce.interfaces.exceptions.AlreadyExistsException;
+import ar.juarce.models.Role;
 import ar.juarce.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User entity) throws AlreadyExistsException {
         encodePassword(entity);
+        entity.addRole(Role.USER);
         return userDao.create(entity);
     }
 
