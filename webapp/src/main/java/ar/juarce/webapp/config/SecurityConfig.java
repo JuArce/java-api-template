@@ -32,10 +32,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import java.io.IOException;
 import java.text.ParseException;
 
-/*
-https://www.baeldung.com/spring-security-basic-authentication
-https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
-https://www.baeldung.com/role-and-privilege-for-spring-security-registration
+/**
+ *  <a href="https://www.baeldung.com/spring-security-basic-authentication">spring-security-basic-authentication</a>
+ * <p>
+ *  <a href="https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter">spring-deprecated-websecurityconfigureradapter</a>
+ * <p>
+ *  <a href="https://www.baeldung.com/role-and-privilege-for-spring-security-registration">role-and-privilege-for-spring-security-registration</a>
  */
 @Configuration
 @EnableWebSecurity
@@ -90,7 +92,8 @@ public class SecurityConfig {
      * AuthenticationManager with two AuthenticationProviders:
      * - DaoAuthenticationProvider
      * - JwtAuthenticationProvider
-     * <a href="https://www.baeldung.com/spring-security-multiple-auth-providers#1-java-configuration">...</a>
+     * <p>
+     * <a href="https://www.baeldung.com/spring-security-multiple-auth-providers#1-java-configuration">https://www.baeldung.com/spring-security-multiple-auth-providers#1-java-configuration</a>
      */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

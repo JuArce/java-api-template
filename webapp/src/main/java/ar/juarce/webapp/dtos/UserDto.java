@@ -1,5 +1,6 @@
 package ar.juarce.webapp.dtos;
 
+import ar.juarce.models.Role;
 import ar.juarce.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Set;
 
 public record UserDto(
         Long id,
@@ -27,7 +29,9 @@ public record UserDto(
 
         boolean enabled,
 
-        String createdAt) {
+        String createdAt,
+
+        Set<Role> roles) {
 
     public static UserDto fromUser(User user) {
         return new UserDto(
@@ -36,7 +40,8 @@ public record UserDto(
                 user.getUsername(),
                 null,
                 user.isEnabled(),
-                user.getCreatedAt().toString()
+                user.getCreatedAt().toString(),
+                user.getRoles()
         );
     }
 
