@@ -13,7 +13,7 @@ The API is a simple CRUD for a User entity.
 - [ ] Add Swagger documentation
 
 ## Requirements 📋
-- Java 17 :coffee:
+- Java 21 :coffee:
 - Maven :wrench:
 - Docker :whale:
 - Postgres :elephant:
