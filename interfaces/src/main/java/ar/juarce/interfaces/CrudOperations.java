@@ -1,6 +1,7 @@
 package ar.juarce.interfaces;
 
 import ar.juarce.interfaces.exceptions.AlreadyExistsException;
+import ar.juarce.interfaces.exceptions.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface CrudOperations<T, ID> {
 
     List<T> findAll();
 
-    T update(ID id, T entity) throws AlreadyExistsException;
+    T update(ID id, T entity) throws NotFoundException, AlreadyExistsException;
 
     void deleteById(ID id);
 
