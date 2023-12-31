@@ -1,10 +1,7 @@
 package ar.juarce.persistence;
 
 import ar.juarce.interfaces.UserDao;
-import ar.juarce.interfaces.exceptions.AlreadyExistsException;
-import ar.juarce.interfaces.exceptions.EmailAlreadyExistsException;
-import ar.juarce.interfaces.exceptions.NotFoundException;
-import ar.juarce.interfaces.exceptions.UsernameAlreadyExistsException;
+import ar.juarce.interfaces.exceptions.*;
 import ar.juarce.models.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -52,7 +49,7 @@ public class UserHibernateDao implements UserDao {
 
     @Override
     public User update(Long id, User entity) throws NotFoundException, AlreadyExistsException {
-        User user = findById(id).orElseThrow(() -> new NotFoundException(String.format("User with id %s", id)));
+        User user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
         updateUser(user, entity);
         entityManager.persist(user);
         return user;

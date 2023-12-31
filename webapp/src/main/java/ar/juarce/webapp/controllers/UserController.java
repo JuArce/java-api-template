@@ -3,6 +3,7 @@ package ar.juarce.webapp.controllers;
 import ar.juarce.interfaces.UserService;
 import ar.juarce.interfaces.exceptions.AlreadyExistsException;
 import ar.juarce.interfaces.exceptions.NotFoundException;
+import ar.juarce.interfaces.exceptions.UserNotFoundException;
 import ar.juarce.models.User;
 import ar.juarce.webapp.dtos.UserDto;
 import jakarta.validation.Valid;
@@ -63,7 +64,7 @@ public class UserController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") Long id) throws NotFoundException {
-        final User user = userService.findById(id).orElseThrow(() -> new NotFoundException(String.format("User with id %s", id)));
+        final User user = userService.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return Response
                 .ok(UserDto.fromUser(user))
                 .build();
