@@ -1,9 +1,7 @@
 package ar.juarce.persistence;
 
 import ar.juarce.interfaces.UserDao;
-import ar.juarce.interfaces.exceptions.AlreadyExistsException;
-import ar.juarce.interfaces.exceptions.EmailAlreadyExistsException;
-import ar.juarce.interfaces.exceptions.UsernameAlreadyExistsException;
+import ar.juarce.interfaces.exceptions.*;
 import ar.juarce.models.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -50,16 +48,11 @@ public class UserHibernateDao implements UserDao {
     }
 
     @Override
-    public User update(Long id, User entity) throws AlreadyExistsException {
-        Optional<User> optionalUser = findById(id);
-
-        if (optionalUser.isPresent()) {
-            User user = updateUser(optionalUser.get(), entity);
-            entityManager.persist(user);
-            return user;
-        } else {
-            return create(entity);
-        }
+    public User update(Long id, User entity) throws NotFoundException, AlreadyExistsException {
+        User user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        updateUser(user, entity);
+        entityManager.persist(user);
+        return user;
     }
 
     @Override
@@ -109,14 +102,13 @@ public class UserHibernateDao implements UserDao {
         checkDuplicateEmail(user);
     }
 
-    private User updateUser(User user, User newValues) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    private void updateUser(User user, User newValues) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         newValues.setId(user.getId());
         validateUserUniqueness(newValues);
 
         user.setUsername(newValues.getUsername());
         user.setEmail(newValues.getEmail());
         user.setPassword(newValues.getPassword());
-        return user;
     }
 
     private void checkDuplicateUsername(User user) throws UsernameAlreadyExistsException {

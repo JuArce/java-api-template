@@ -3,6 +3,7 @@ package ar.juarce.services;
 import ar.juarce.interfaces.UserDao;
 import ar.juarce.interfaces.UserService;
 import ar.juarce.interfaces.exceptions.AlreadyExistsException;
+import ar.juarce.interfaces.exceptions.NotFoundException;
 import ar.juarce.models.Role;
 import ar.juarce.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User update(Long id, User entity) throws AlreadyExistsException {
+    public User update(Long id, User entity) throws NotFoundException, AlreadyExistsException {
         encodePassword(entity);
         return userDao.update(id, entity);
     }
