@@ -142,7 +142,7 @@ public class SecurityConfiguration {
 
                 // Set permissions on endpoints
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users").anonymous()
+                        .requestMatchers(HttpMethod.POST, "/users").anonymous()
                         .requestMatchers(new OrRequestMatcher(
                                 new AntPathRequestMatcher("/users/{id:\\d+}/**", HttpMethod.PUT.toString()),
                                 new AntPathRequestMatcher("/users/{id:\\d+}/**", HttpMethod.DELETE.toString())

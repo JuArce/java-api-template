@@ -8,10 +8,10 @@ public enum Role {
     MODERATOR("ROLE_MODERATOR"),
     USER("ROLE_USER");
 
-    private final String name;
+    private final String role;
 
-    Role(String name) {
-        this.name = name;
+    Role(String role) {
+        this.role = role;
     }
 
 }
