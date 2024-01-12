@@ -33,6 +33,14 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+
+import static org.springframework.web.cors.CorsConfiguration.ALL;
 
 /**
  * <a href="https://www.baeldung.com/spring-security-basic-authentication">spring-security-basic-authentication</a>
@@ -123,6 +131,21 @@ public class SecurityConfiguration {
         return new BearerTokenAuthenticationFilter(authenticationManager);
     }
 
+    /**
+     * <a href="https://docs.spring.io/spring-security/reference/reactive/integrations/cors.html">Spring Security CORS</a>
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList(ALL));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.addAllowedHeader(ALL);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Link", "Location", "ETag", "Jwt"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -139,6 +162,9 @@ public class SecurityConfiguration {
 
                 // Disable CSRF
                 .csrf(AbstractHttpConfigurer::disable)
+
+                // Enable CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 // Set permissions on endpoints
                 .authorizeHttpRequests(authorize -> authorize
