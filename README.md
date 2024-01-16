@@ -6,8 +6,8 @@ The API is a simple CRUD for a User entity.
 ## Next Steps 🚀
 - [ ] Add unit tests in the service layer
 - [x] Integrate Spring Security and JWT authentication
-- [ ] Implement user roles
-- [ ] Implement ACL
+- [x] Implement user roles
+- [x] Implement ACL
 - [ ] Add integration tests
 - [ ] Add Dockerfile
 - [ ] Add Swagger documentation
